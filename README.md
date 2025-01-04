@@ -1,0 +1,1 @@
+TODO: ploturile sa fie salvate ca imagini direct, nu facut ss la ploturi
