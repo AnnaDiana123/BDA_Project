@@ -6,6 +6,10 @@
   <component name="ChangeListManager">
     <list default="true" id="15fbe6e9-2e1c-4feb-ba03-2a633f8d0274" name="Changes" comment="Added dummy files">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/code/clustering.py" beforeDir="false" afterPath="$PROJECT_DIR$/code/clustering.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/code/post_processing.py" beforeDir="false" afterPath="$PROJECT_DIR$/code/post_processing.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/code/utils.py" beforeDir="false" afterPath="$PROJECT_DIR$/code/utils.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/notebooks/experiment_iris.ipynb" beforeDir="false" afterPath="$PROJECT_DIR$/notebooks/experiment_iris.ipynb" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -49,6 +53,7 @@
   <component name="PropertiesComponent"><![CDATA[{
   "keyToString": {
     "RunOnceActivity.ShowReadmeOnStart": "true",
+    "RunOnceActivity.git.unshallow": "true",
     "git-widget-placeholder": "master",
     "last_opened_file_path": "C:/Users/User/Desktop/facultate/master/an1/BDA/BDA_Project/notebooks",
     "node.js.detected.package.eslint": "true",
@@ -82,6 +87,8 @@
       <option name="presentableId" value="Default" />
       <updated>1736006843072</updated>
       <workItem from="1736006845296" duration="4742000" />
+      <workItem from="1736011808059" duration="896000" />
+      <workItem from="1736349006252" duration="5921000" />
     </task>
     <task id="LOCAL-00001" summary="Initial Commit- project data structure &amp; databases">
       <option name="closed" value="true" />
@@ -107,7 +114,15 @@
       <option name="project" value="LOCAL" />
       <updated>1736011706592</updated>
     </task>
-    <option name="localTasksCounter" value="4" />
+    <task id="LOCAL-00004" summary="Added dummy files">
+      <option name="closed" value="true" />
+      <created>1736011995218</created>
+      <option name="number" value="00004" />
+      <option name="presentableId" value="LOCAL-00004" />
+      <option name="project" value="LOCAL" />
+      <updated>1736011995218</updated>
+    </task>
+    <option name="localTasksCounter" value="5" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
