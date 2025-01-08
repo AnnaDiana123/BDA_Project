@@ -1,5 +1,10 @@
-from sklearn.cluster import KMeans
 import matplotlib.pyplot as plt
+import numpy as np
+import pandas as pd
+from scipy.optimize import linear_sum_assignment
+from sklearn.cluster import KMeans
+from sklearn.metrics import confusion_matrix
+
 
 def run_kmeans(data, n_clusters):
     kmeans = KMeans(n_clusters=n_clusters, random_state=42, n_init=10)
@@ -36,3 +41,11 @@ def elbow_method(data, max_clusters=10, output_path=None):
         plt.savefig(output_path)
     plt.show()
 
+
+# Align cluster labels with true labels using Hungarian algorithm
+def align_labels(true_labels, cluster_labels):
+    conf_matrix = confusion_matrix(true_labels, cluster_labels)
+    row_indices, col_indices = linear_sum_assignment(-conf_matrix)
+    mapping = {col: row for row, col in zip(row_indices, col_indices)}
+    aligned_labels = np.array([mapping[label] for label in cluster_labels])
+    return aligned_labels
