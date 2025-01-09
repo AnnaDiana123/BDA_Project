@@ -1,55 +1,50 @@
-from sklearn.ensemble import RandomForestClassifier
-from sklearn.metrics import precision_score, recall_score, accuracy_score
-import pandas as pd
 import numpy as np
+import pandas as pd
+from sklearn.ensemble import RandomForestClassifier
 
-def post_process_with_rf(train_data, train_labels, test_data, test_labels=None):
+
+def post_process_with_rf(train_data, train_labels, test_data):
     rf = RandomForestClassifier(n_estimators=100, random_state=42)
     rf.fit(train_data, train_labels)
     predicted_labels = rf.predict(test_data)
 
-    # Ensure labels are of consistent type
-    if test_labels is not None:
-        test_labels = test_labels.astype(str)
-        predicted_labels = [str(label) for label in predicted_labels]
-
-    metrics = {}
-    if test_labels is not None:
-        metrics['precision'] = precision_score(
-            test_labels, predicted_labels, average='weighted', zero_division=0
-        )
-        metrics['recall'] = recall_score(
-            test_labels, predicted_labels, average='weighted', zero_division=0
-        )
-        metrics['accuracy'] = accuracy_score(test_labels, predicted_labels)
-
-    return pd.Series(predicted_labels, index=test_data.index), metrics
-
-
-
+    return pd.Series(predicted_labels, index=test_data.index)
 
 
 def split_stable_and_misclassified(data, labels, centroids, threshold=0.5):
     """
-    Split data into stable and misclassified points based on distance to centroids.
+    Split data into stable and misclassified points based on the SC criterion.
 
     Args:
         data (pd.DataFrame): Dataset with features.
         labels (pd.Series): Cluster labels for the data.
         centroids (np.ndarray): Array of cluster centroids.
-        threshold (float): Distance threshold to identify misclassified points.
+        threshold (float): SC threshold to identify misclassified points.
 
     Returns:
-        tuple: (stable_data, stable_labels, misclassified_data)
+        tuple: (stable_data, stable_labels, misclassified_data, misclassified_labels)
     """
-    # Compute distances to assigned centroids
-    distances = np.linalg.norm(data.values - centroids[labels], axis=1)
+    # Ensure data is a NumPy array for computation
+    data_np = data.values if isinstance(data, pd.DataFrame) else data
+
+    # Compute distances from each point to all centroids
+    distances = np.linalg.norm(data_np[:, np.newaxis] - centroids, axis=2)  # Shape: (n_points, n_centroids)
+
+    # Compute the SC ratios
+    min_distances = np.min(distances, axis=1, keepdims=True)
+    sc_ratios = min_distances / distances  # Shape: (n_points, n_centroids)
+
+    # Identify misclassified points based on SC
+    misclassified_indices = np.any((sc_ratios > threshold) & (sc_ratios != 1.0), axis=1)
 
     # Split stable and misclassified points
-    stable_indices = distances <= threshold
+    stable_indices = ~misclassified_indices
+
+    # Convert back to pandas DataFrame/Series
     stable_data = data[stable_indices]
-    stable_labels = labels[stable_indices]
-    misclassified_data = data[~stable_indices]
+    stable_labels = pd.Series(labels[stable_indices], index=stable_data.index, name="Cluster")
 
-    return stable_data, stable_labels, misclassified_data
+    misclassified_data = data[misclassified_indices]
+    misclassified_labels = pd.Series(-1, index=misclassified_data.index, name="Cluster")
 
+    return stable_data, stable_labels, misclassified_data, misclassified_labels

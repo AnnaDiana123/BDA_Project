@@ -43,9 +43,29 @@ def elbow_method(data, max_clusters=10, output_path=None):
 
 
 # Align cluster labels with true labels using Hungarian algorithm
-def align_labels(true_labels, cluster_labels):
+def align_labels_and_centroids(true_labels, cluster_labels, centroids):
+    """
+    Align cluster labels and centroids with true labels using the Hungarian method.
+
+    Args:
+        true_labels (array-like): True labels of the data.
+        cluster_labels (array-like): Predicted cluster labels from K-Means.
+        centroids (np.ndarray): Centroids from K-Means.
+
+    Returns:
+        tuple: (aligned_cluster_labels, aligned_centroids)
+    """
+    # Compute the confusion matrix
     conf_matrix = confusion_matrix(true_labels, cluster_labels)
+
+    # Apply Hungarian algorithm to find the optimal mapping
     row_indices, col_indices = linear_sum_assignment(-conf_matrix)
     mapping = {col: row for row, col in zip(row_indices, col_indices)}
-    aligned_labels = np.array([mapping[label] for label in cluster_labels])
-    return aligned_labels
+
+    # Align cluster labels
+    aligned_cluster_labels = np.array([mapping[label] for label in cluster_labels])
+
+    # Reorder centroids based on the mapping
+    aligned_centroids = centroids[list(mapping.keys())]
+
+    return aligned_cluster_labels, aligned_centroids
