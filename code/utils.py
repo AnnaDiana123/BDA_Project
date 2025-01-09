@@ -1,5 +1,5 @@
-import pandas as pd
 import matplotlib.pyplot as plt
+import pandas as pd
 import seaborn as sns
 from sklearn.metrics import precision_score, recall_score, accuracy_score
 from sklearn.preprocessing import StandardScaler, LabelEncoder
@@ -73,24 +73,32 @@ def calculate_metrics(true_labels, predicted_labels):
     return {"precision": precision, "recall": recall, "accuracy": accuracy}
 
 
-# Plot metrics for all steps
-def plot_metrics(metrics_dict):
-    steps = metrics_dict.keys()
-    precision = [metrics["precision"] for metrics in metrics_dict.values()]
-    recall = [metrics["recall"] for metrics in metrics_dict.values()]
-    accuracy = [metrics["accuracy"] for metrics in metrics_dict.values()]
+def display_metrics_table(metrics_dict):
+    """
+    Display a metrics table.
 
-    x = range(len(steps))
+    Args:
+        metrics_dict (dict): Dictionary with keys as steps and values as dictionaries of metrics.
 
-    plt.figure(figsize=(10, 6))
-    plt.plot(x, precision, label="Precision", marker='o')
-    plt.plot(x, recall, label="Recall", marker='o')
-    plt.plot(x, accuracy, label="Accuracy", marker='o')
-    plt.xticks(x, steps)
-    plt.ylim(0, 1)
-    plt.xlabel("Steps")
-    plt.ylabel("Score")
-    plt.title("Metrics Across Steps")
-    plt.legend()
-    plt.grid()
-    plt.show()
+    Returns:
+        None
+    """
+    # Prepare data for the table
+    steps = list(metrics_dict.keys())
+    table_data = []
+
+    for step, metrics in metrics_dict.items():
+        row = {"Step": step}
+        row.update(metrics)
+        table_data.append(row)
+
+    # Create a DataFrame for the metrics
+    metrics_df = pd.DataFrame(table_data)
+
+    # Reorder columns for better readability
+    metrics_df = metrics_df[["Step", "precision", "recall", "accuracy"]]
+
+    # Display the table
+    print("Metrics Table")
+    print(metrics_df.to_string(index=False))
+
