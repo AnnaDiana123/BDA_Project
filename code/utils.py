@@ -1,8 +1,12 @@
+import matplotlib.pyplot as plt
+import pandas as pd
+import seaborn as sns
 from sklearn.metrics import precision_score, recall_score, accuracy_score
 from sklearn.preprocessing import StandardScaler, LabelEncoder
+
+
+from sklearn.preprocessing import StandardScaler, LabelEncoder
 import pandas as pd
-import matplotlib.pyplot as plt
-import seaborn as sns
 
 def load_data(file_path):
     """
@@ -30,6 +34,47 @@ def load_data(file_path):
 
     return scaled_df, pd.Series(encoded_labels), label_mapping
 
+def load_data_dataset2(file_path, has_labels=True):
+    """
+    Load and preprocess data from a given file path. Handles datasets with or without labels.
+    Cleans data by removing non-numeric entries and missing values.
+
+    Args:
+        file_path (str): Path to the dataset file.
+        has_labels (bool): Flag to indicate if the dataset contains labels.
+
+    Returns:
+        pd.DataFrame: Scaled feature data.
+        pd.Series or None: Encoded numeric labels (if labels exist), otherwise None.
+        dict or None: Mapping of original labels to numeric values (if labels exist), otherwise None.
+    """
+    # Load data
+    data = pd.read_csv(file_path, header=None)
+
+    # Ensure all columns have numeric data
+    data = data.apply(pd.to_numeric, errors="coerce")  # Convert non-numeric values to NaN
+    data.dropna(inplace=True)  # Drop rows with NaN values
+
+    # Scale the features
+    scaler = StandardScaler()
+    if has_labels:
+        scaled_data = scaler.fit_transform(data.iloc[:, :-1])  # Exclude label column
+        scaled_df = pd.DataFrame(scaled_data, columns=data.columns[:-1])
+        labels = data.iloc[:, -1]  # Extract labels
+
+        # Encode the labels numerically
+        label_encoder = LabelEncoder()
+        encoded_labels = label_encoder.fit_transform(labels)
+        label_mapping = dict(zip(label_encoder.classes_, label_encoder.transform(label_encoder.classes_)))
+
+        return scaled_df, pd.Series(encoded_labels, name="Labels"), label_mapping
+
+    else:
+        # If no labels, scale all columns
+        scaled_data = scaler.fit_transform(data)
+        scaled_df = pd.DataFrame(scaled_data, columns=data.columns)
+
+        return scaled_df
 
 def save_results(data, labels, output_path):
     results = data.copy()
@@ -70,9 +115,6 @@ def calculate_metrics(true_labels, predicted_labels):
     recall = recall_score(true_labels, predicted_labels, average='weighted', zero_division=0)
     accuracy = accuracy_score(true_labels, predicted_labels)
     return {"precision": precision, "recall": recall, "accuracy": accuracy}
-
-
-
 
 
 def display_and_save_metrics_table(metrics_dict, output_path="metrics_table.png"):
@@ -125,3 +167,4 @@ def display_and_save_metrics_table(metrics_dict, output_path="metrics_table.png"
     plt.close()
 
     print(f"Metrics table saved to {output_path}")
+

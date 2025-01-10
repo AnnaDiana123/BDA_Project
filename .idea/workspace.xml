@@ -4,11 +4,12 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="15fbe6e9-2e1c-4feb-ba03-2a633f8d0274" name="Changes" comment="Fixed metrics displayed and random forest params">
+    <list default="true" id="15fbe6e9-2e1c-4feb-ba03-2a633f8d0274" name="Changes" comment="Added silhouette method&#10;Compared thresholds&#10;Added final results images">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/code/post_processing.py" beforeDir="false" afterPath="$PROJECT_DIR$/code/post_processing.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/code/utils.py" beforeDir="false" afterPath="$PROJECT_DIR$/code/utils.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/notebooks/experiment_dataset2.ipynb" beforeDir="false" afterPath="$PROJECT_DIR$/notebooks/experiment_dataset2.ipynb" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/notebooks/experiment_iris.ipynb" beforeDir="false" afterPath="$PROJECT_DIR$/notebooks/experiment_iris.ipynb" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/notebooks/experiment_iris_siluette.ipynb" beforeDir="false" afterPath="$PROJECT_DIR$/notebooks/experiment_iris_siluette.ipynb" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -91,7 +92,7 @@
       <workItem from="1736349006252" duration="6953000" />
       <workItem from="1736359692029" duration="10447000" />
       <workItem from="1736437600775" duration="14706000" />
-      <workItem from="1736511091424" duration="4613000" />
+      <workItem from="1736511091424" duration="8614000" />
     </task>
     <task id="LOCAL-00001" summary="Initial Commit- project data structure &amp; databases">
       <option name="closed" value="true" />
@@ -181,7 +182,15 @@
       <option name="project" value="LOCAL" />
       <updated>1736456633367</updated>
     </task>
-    <option name="localTasksCounter" value="12" />
+    <task id="LOCAL-00012" summary="Added silhouette method&#10;Compared thresholds&#10;Added final results images">
+      <option name="closed" value="true" />
+      <created>1736515951185</created>
+      <option name="number" value="00012" />
+      <option name="presentableId" value="LOCAL-00012" />
+      <option name="project" value="LOCAL" />
+      <updated>1736515951185</updated>
+    </task>
+    <option name="localTasksCounter" value="13" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -207,6 +216,7 @@
     <MESSAGE value="Added align_labels function" />
     <MESSAGE value="Various fixes" />
     <MESSAGE value="Fixed metrics displayed and random forest params" />
-    <option name="LAST_COMMIT_MESSAGE" value="Fixed metrics displayed and random forest params" />
+    <MESSAGE value="Added silhouette method&#10;Compared thresholds&#10;Added final results images" />
+    <option name="LAST_COMMIT_MESSAGE" value="Added silhouette method&#10;Compared thresholds&#10;Added final results images" />
   </component>
 </project>
