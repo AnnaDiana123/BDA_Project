@@ -1,9 +1,8 @@
-import matplotlib.pyplot as plt
-import pandas as pd
-import seaborn as sns
 from sklearn.metrics import precision_score, recall_score, accuracy_score
 from sklearn.preprocessing import StandardScaler, LabelEncoder
-
+import pandas as pd
+import matplotlib.pyplot as plt
+import seaborn as sns
 
 def load_data(file_path):
     """
@@ -73,12 +72,16 @@ def calculate_metrics(true_labels, predicted_labels):
     return {"precision": precision, "recall": recall, "accuracy": accuracy}
 
 
-def display_metrics_table(metrics_dict):
+
+
+
+def display_and_save_metrics_table(metrics_dict, output_path="metrics_table.png"):
     """
-    Display a metrics table.
+    Display a nicely formatted metrics table with colors and save it as an image.
 
     Args:
         metrics_dict (dict): Dictionary with keys as steps and values as dictionaries of metrics.
+        output_path (str): Path to save the image of the metrics table.
 
     Returns:
         None
@@ -98,7 +101,27 @@ def display_metrics_table(metrics_dict):
     # Reorder columns for better readability
     metrics_df = metrics_df[["Step", "precision", "recall", "accuracy"]]
 
-    # Display the table
-    print("Metrics Table")
-    print(metrics_df.to_string(index=False))
+    # Format the metrics for display using map
+    for col in ["precision", "recall", "accuracy"]:
+        metrics_df[col] = metrics_df[col].map(lambda x: f"{x:.2f}")
 
+    # Use Seaborn to create a heatmap-style table
+    plt.figure(figsize=(8, len(metrics_df) * 0.6))
+    sns.heatmap(
+        metrics_df.set_index("Step").astype(float),
+        annot=True,
+        fmt=".2f",
+        cmap="Blues",  # Better contrast with black text
+        linewidths=0.5,
+        linecolor="white",
+        cbar=False,
+        annot_kws={"size": 10, "color": "black"},  # Ensure black text
+    )
+
+    # Add title and save the image
+    plt.title("Metrics Table", fontsize=14, pad=10)
+    plt.tight_layout()
+    plt.savefig(output_path, dpi=300)
+    plt.close()
+
+    print(f"Metrics table saved to {output_path}")

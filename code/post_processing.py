@@ -68,3 +68,37 @@ def split_stable_and_misclassified(data, labels, centroids, threshold=0.5):
     misclassified_labels = pd.Series(-1, index=misclassified_data.index, name="Cluster")
 
     return stable_data, stable_labels, misclassified_data, misclassified_labels
+
+from sklearn.metrics import silhouette_samples
+
+def detect_misclassified_with_silhouette(data, labels, threshold=0.2):
+    """
+    Detect misclassified points using Silhouette Scores.
+
+    Args:
+        data (np.ndarray or pd.DataFrame): Dataset with features.
+        labels (np.ndarray or pd.Series): Cluster labels for the data.
+        threshold (float): Silhouette score threshold to classify points as misclassified.
+
+    Returns:
+        tuple: (stable_data, stable_labels, misclassified_data, misclassified_labels)
+    """
+    # Ensure data is a NumPy array
+    data_np = data.values if isinstance(data, pd.DataFrame) else data
+
+    # Compute silhouette scores
+    silhouette_scores = silhouette_samples(data_np, labels)
+
+    # Identify misclassified points
+    misclassified_indices = silhouette_scores < threshold
+    stable_indices = ~misclassified_indices
+
+    # Split stable and misclassified points
+    stable_data = data[stable_indices]
+    stable_labels = pd.Series(labels[stable_indices], index=stable_data.index, name="Cluster")
+
+    misclassified_data = data[misclassified_indices]
+    misclassified_labels = pd.Series(-1, index=misclassified_data.index, name="Cluster")
+
+    return stable_data, stable_labels, misclassified_data, misclassified_labels
+
